@@ -123,7 +123,9 @@ def main():
                                                    '{}.csr'.format(domain))):
                     logger.warn('CSR file not found for {}'.format(domain))
                 else:
-                    cert_content = gen_crt(cert_file, args.cert_path,
+                    csr_file = os.path.join(args.csr_path,
+                                            '{}.csr'.format(domain))
+                    cert_content = gen_crt(csr_file, args.cert_path,
                                            args.acme_tiny_path,
                                            args.acme_account_key,
                                            args.acme_challenge, le_root_cert)

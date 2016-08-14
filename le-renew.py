@@ -52,9 +52,9 @@ class BufferingSMTPHandler(handlers.BufferingHandler):
 
 def cert_need_renew(cert_file, max_ttl):
     try:
-        subprocess.run(['openssl', 'x509',
-                        '-checkend {}'.format(max_ttl),
-                        '-noout', '-in {}'.format(cert_file)])
+        subprocess.call(['openssl', 'x509',
+                         '-checkend {}'.format(max_ttl),
+                         '-noout', '-in {}'.format(cert_file)])
         return True
     except subprocess.CalledProcessError:
         return False
@@ -62,11 +62,11 @@ def cert_need_renew(cert_file, max_ttl):
 
 def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
             le_root_cert):
-    process = subprocess.run([acme_tiny_path,
-                              '--account-key {}'.format(acme_account_key),
-                              '--csr {}'.format(csr),
-                              '--acme-dir {}'.format(acme_challenge)],
-                             stdout=subprocess.PIPE)
+    process = subprocess.call([acme_tiny_path,
+                               '--account-key {}'.format(acme_account_key),
+                               '--csr {}'.format(csr),
+                               '--acme-dir {}'.format(acme_challenge)],
+                              stdout=subprocess.PIPE)
     cert = '{}{}'.format(process.stdout.read(), le_root_cert)
     return cert
 
@@ -85,8 +85,8 @@ def main():
                         required=True)
     parser.add_argument('--acme_challenge',
                         help='Path to ACME challenge directory', required=True)
-    parser.add_argument('--le_root_cert', help='Path to Let\'s Encrypt root X3 '
-                        'certificate', required=True)
+    parser.add_argument('--le_root_cert', help='Path to Let\'s Encrypt root X3'
+                        ' certificate', required=True)
     parser.add_argument('--max_ttl', type=int, help='Max expiration time (in '
                         'seconds) to renew', default=86400)
     args = parser.parse_args()

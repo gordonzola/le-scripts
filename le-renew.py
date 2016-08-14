@@ -56,7 +56,7 @@ def cert_need_renew(cert_file, max_ttl):
                         '-checkend {}'.format(max_ttl),
                         '-noout', '-in {}'.format(cert_file)])
         return True
-    except subprocess.CalledProcessErorr:
+    except subprocess.CalledProcessError:
         return False
 
 

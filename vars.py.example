@@ -1,0 +1,4 @@
+MAILHOST = 'localhost'
+FROM = 'le-renew@localhost'
+TO = 'admin@localhost'
+SUBJECT = 'Let\'s Encrypt renewal information'

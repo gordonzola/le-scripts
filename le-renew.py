@@ -57,7 +57,7 @@ def cert_need_renew(cert_file, max_ttl):
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
     out, err = process.communicate(timeout=15)
-    if err != '':
+    if len(err) > 0:
         cert_filename = cert_file.split('/')[-1]
         logger.warning('openssl process stderr while parsing {}: {}'
                        .format(cert_filename, err))
@@ -74,7 +74,7 @@ def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
                                stderr=subprocess.PIPE)
     cert, err = process.communicate(timeout=60)
     bundled_cert = '{}{}'.format(cert, le_root_cert)
-    if err != '':
+    if len(err) > 0:
         domain = csr.split('/')[-1].replace('.csr', '')
         logger.warning('acme-tiny process stderr while generating {}: {}'
                        .format(domain, err))

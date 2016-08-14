@@ -4,10 +4,18 @@ import subprocess
 import logging
 import os
 import smtplib
+import sys
 from logging import handlers
-from . import config
 
 logger = logging.getLogger('le-renew')
+
+try:
+    from . import config
+except ImportError as e:
+    logger.critical('Failed to import config. Did you copy the '
+                    'config.py.example file into config.py, and change its '
+                    'values?')
+    sys.exit(1)
 
 
 class BufferingSMTPHandler(handlers.BufferingHandler):

@@ -20,6 +20,10 @@ except ImportError as e:
 
 
 class BufferingSMTPHandler(handlers.BufferingHandler):
+    """
+    Logging handler that sends a single mail (hopefully) with all logger
+    messages. Adapted from https://gist.github.com/anonymous/1379446
+    """
 
     def __init__(self, mailhost, fromaddr, toaddrs, subject, capacity):
         super().__init__(capacity)

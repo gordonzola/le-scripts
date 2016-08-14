@@ -53,8 +53,8 @@ class BufferingSMTPHandler(handlers.BufferingHandler):
 def cert_need_renew(cert_file, max_ttl):
     try:
         subprocess.call(['openssl', 'x509',
-                         '-checkend {}'.format(max_ttl),
-                         '-noout', '-in {}'.format(cert_file)])
+                         '-checkend', str(max_ttl),
+                         '-noout', '-in', cert_file])
         return True
     except subprocess.CalledProcessError:
         return False
@@ -63,9 +63,9 @@ def cert_need_renew(cert_file, max_ttl):
 def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
             le_root_cert):
     process = subprocess.call([acme_tiny_path,
-                               '--account-key {}'.format(acme_account_key),
-                               '--csr {}'.format(csr),
-                               '--acme-dir {}'.format(acme_challenge)],
+                               '--account-key', acme_account_key,
+                               '--csr', csr,
+                               '--acme-dir', acme_challenge],
                               stdout=subprocess.PIPE)
     cert = '{}{}'.format(process.stdout.read(), le_root_cert)
     return cert

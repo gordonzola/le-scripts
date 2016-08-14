@@ -113,11 +113,12 @@ def main():
                                                    '{}.csr'.format(domain))):
                     logger.warn('CSR file not found for {}'.format(domain))
                 else:
-                    cert = gen_crt(cert_file, args.cert_path,
-                                   args.acme_tiny_path, args.acme_account_key,
-                                   args.acme_challenge, le_root_cert)
+                    cert_content = gen_crt(cert_file, args.cert_path,
+                                           args.acme_tiny_path,
+                                           args.acme_account_key,
+                                           args.acme_challenge, le_root_cert)
                     with open(cert_file, 'w') as fd:
-                        fd.write(cert)
+                        fd.write(cert_content)
             except Exception as e:
                 logger.error('Failed to generate CRT {}: {}'
                              .format(cert, e))

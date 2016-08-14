@@ -61,12 +61,12 @@ def cert_need_renew(cert_file, max_ttl):
         cert_filename = cert_file.split('/')[-1]
         logger.warning('openssl process stderr while parsing {}: {}'
                        .format(cert_filename, err))
-    return process.returncode == 0
+    return process.returncode != 0
 
 
 def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
             le_root_cert):
-    process = subprocess.Popen([acme_tiny_path,
+    process = subprocess.Popen(['python', acme_tiny_path,
                                 '--account-key', acme_account_key,
                                 '--csr', csr,
                                 '--acme-dir', acme_challenge],

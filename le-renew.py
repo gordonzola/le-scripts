@@ -8,6 +8,7 @@ import sys
 from logging import handlers
 
 logger = logging.getLogger('le-renew')
+logger.setLevel(logging.INFO)
 
 try:
     import config
@@ -59,7 +60,7 @@ def cert_need_renew(cert_file, max_ttl):
     out, err = process.communicate(timeout=15)
     if len(err) > 0:
         cert_filename = cert_file.split('/')[-1]
-        logger.warning('openssl process stderr while parsing {}: {}'
+        logger.warning('openssl process stderr while parsing {}:\n{}'
                        .format(cert_filename, err.decode()))
     return process.returncode != 0
 
@@ -76,7 +77,7 @@ def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
     bundled_cert = '{}{}'.format(cert.decode(), le_root_cert)
     if len(err) > 0:
         domain = csr.split('/')[-1].replace('.csr', '')
-        logger.warning('acme-tiny process stderr while generating {}: {}'
+        logger.warning('acme-tiny process stderr while generating {}:\n{}'
                        .format(domain, err.decode()))
     return bundled_cert
 

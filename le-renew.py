@@ -51,30 +51,34 @@ class BufferingSMTPHandler(handlers.BufferingHandler):
 
 
 def cert_need_renew(cert_file, max_ttl):
-    try:
-        subprocess.call(['openssl', 'x509',
-                         '-checkend', str(max_ttl),
-                         '-noout', '-in', cert_file])
-        return True
-    except subprocess.CalledProcessError:
-        return False
+    process = subprocess.Popen(['openssl', 'x509',
+                                '-checkend', str(max_ttl),
+                                '-noout', '-in', cert_file],
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    out, err = process.communicate(timeout=15)
+    if err != '':
+        cert_filename = cert_file.split('/')[-1]
+        logger.warning('openssl process stderr while parsing {}: {}'
+                       .format(cert_filename, err))
+    return process.returncode == 0
 
 
 def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
             le_root_cert):
-    process = subprocess.call([acme_tiny_path,
-                               '--account-key', acme_account_key,
-                               '--csr', csr,
-                               '--acme-dir', acme_challenge],
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
-    cert = '{}{}'.format(process.stdout.read(), le_root_cert)
-    err = process.stderr.read()
+    process = subprocess.Popen([acme_tiny_path,
+                                '--account-key', acme_account_key,
+                                '--csr', csr,
+                                '--acme-dir', acme_challenge],
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    cert, err = process.communicate(timeout=60)
+    bundled_cert = '{}{}'.format(cert, le_root_cert)
     if err != '':
         domain = csr.split('/')[-1].replace('.csr', '')
-        logger.warning('Acme-tiny process stderr while generating {}: {}'
+        logger.warning('acme-tiny process stderr while generating {}: {}'
                        .format(domain, err))
-    return cert
+    return bundled_cert
 
 
 def main():

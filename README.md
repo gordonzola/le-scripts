@@ -4,7 +4,7 @@ This is a bunch of scripts designed to complete the task of
 [acme-tiny](https://github.com/diafygi/acme-tiny): make TLS certificates
 generation simple and automated.
 
-There are the currently existing scripts:
+Here are the currently existing scripts:
 
 - `le-renew.py`: checks all certificates from a directory, and starts renewal
   process if necessary. You probably want to use a cron task for this
@@ -43,6 +43,9 @@ Let's Encrypt account key… but there are some differences:
   cron periodicity.
 
 ### Example usage
+
+**You don’t have to (and should not) run this script as root! Create a
+`letsencrypt` dedicated user with limited rights!**
 
     ./le-renew.py  --cert_path /home/letsencrypt/certs/ --acme_tiny_path /home/letsencrypt/acme-tiny/acme_tiny.py --acme_account_key /home/letsencrypt/user.key --csr_path /home/letsencrypt/csr --acme_challenge /home/letsencrypt/docroot/ --le_root_cert /home/letsencrypt/files/lets-encrypt-x3-cross-signed.pem
 

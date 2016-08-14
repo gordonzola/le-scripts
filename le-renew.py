@@ -66,8 +66,14 @@ def gen_crt(csr, cert_path, acme_tiny_path, acme_account_key, acme_challenge,
                                '--account-key', acme_account_key,
                                '--csr', csr,
                                '--acme-dir', acme_challenge],
-                              stdout=subprocess.PIPE)
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
     cert = '{}{}'.format(process.stdout.read(), le_root_cert)
+    err = process.stderr.read()
+    if err != '':
+        domain = csr.split('/')[-1].replace('.csr', '')
+        logger.warning('Acme-tiny process stderr while generating {}: {}'
+                       .format(domain, err))
     return cert
 
 

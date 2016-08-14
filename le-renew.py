@@ -75,19 +75,19 @@ def main():
     parser = argparse.ArgumentParser(
         description='Check Let\'s Encrypt certificates and renew those which '
         'are about to expire')
-    parser.add_argument('cert_path', help='Certificate directory',
+    parser.add_argument('--cert_path', help='Certificate directory',
                         required=True)
-    parser.add_argument('acme_tiny_path', help='Path to acme-tiny script',
+    parser.add_argument('--acme_tiny_path', help='Path to acme-tiny script',
                         required=True)
-    parser.add_argument('acme_account_key', help='Path to acme-tiny account '
+    parser.add_argument('--acme_account_key', help='Path to acme-tiny account '
                         'key', required=True)
-    parser.add_argument('csr_path', help='Path to csr files directory',
+    parser.add_argument('--csr_path', help='Path to csr files directory',
                         required=True)
-    parser.add_argument('acme_challenge',
+    parser.add_argument('--acme_challenge',
                         help='Path to ACME challenge directory', required=True)
-    parser.add_argument('le_root_cert', help='Path to Let\'s Encrypt root X3 '
+    parser.add_argument('--le_root_cert', help='Path to Let\'s Encrypt root X3 '
                         'certificate', required=True)
-    parser.add_argument('max_ttl', type=int, help='Max expiration time (in '
+    parser.add_argument('--max_ttl', type=int, help='Max expiration time (in '
                         'seconds) to renew', default=86400)
     args = parser.parse_args()
 
